@@ -16,7 +16,7 @@ namespace NinjectPractice.Controllers
         // GET: Products
 
         [HttpGet]
-        public IEnumerable<Product> Index()
+        public IEnumerable<Product> GetAll()
         {
             var products = _productsRepository.GetAll();
             return products;
