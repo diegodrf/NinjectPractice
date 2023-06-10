@@ -1,4 +1,5 @@
-﻿using NinjectPractice.Models;
+﻿using NinjectPractice.Exceptions;
+using NinjectPractice.Models;
 using NinjectPractice.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,9 +25,13 @@ namespace NinjectPractice.Controllers
 
         [Route("{id:int}")]
         [HttpGet]
-        public async Task<Product> GetById(int id)
+        public async Task<IHttpActionResult> GetById(int id)
         {
-            return await _productsRepository.GetByIdAsync(id);
+            var product = await _productsRepository.GetByIdAsync(id);
+            
+            if(product is null) return NotFound();
+
+            return Ok(product);
         }
 
         [Route("")]
@@ -38,12 +43,17 @@ namespace NinjectPractice.Controllers
 
         [Route("{id:int}")]
         [HttpPut]
-        public async Task<Product> Update(
-            [FromUri] int id, 
-            [FromBody] Product product
-            )
+        public async Task<IHttpActionResult> Update([FromUri] int id, [FromBody] Product product)
         {
-            return await _productsRepository.UpdateAsync(id, product);
+            try
+            {
+               var newProduct =  await _productsRepository.UpdateAsync(id, product);
+               return Ok(newProduct);
+            }
+            catch (ElementNotFound) 
+            {
+                return NotFound();
+            }
         }
     }
 }
