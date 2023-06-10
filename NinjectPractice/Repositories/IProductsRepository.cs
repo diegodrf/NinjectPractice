@@ -9,6 +9,9 @@ namespace NinjectPractice.Repositories
 {
     public interface IProductsRepository
     {
-        IEnumerable<Product> GetAll();
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task<Product> GetByIdAsync(int id);
+        Task<Product> CreateAsync(Product product);
+        Task<Product> UpdateAsync(int id, Product product);
     }
 }

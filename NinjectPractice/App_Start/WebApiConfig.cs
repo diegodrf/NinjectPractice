@@ -22,7 +22,7 @@ namespace NinjectPractice
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { controller = "Products", action = "GetAll", id = UrlParameter.Optional }
+                defaults: new { id = UrlParameter.Optional }
             );
 
             var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");

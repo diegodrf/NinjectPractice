@@ -1,10 +1,7 @@
 ﻿using NinjectPractice.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
 
 namespace NinjectPractice.Repositories
 {
@@ -16,11 +13,29 @@ namespace NinjectPractice.Repositories
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Product> GetAll()
+        public async Task<Product> CreateAsync(Product product)
         {
-            return _dbContext.Products
-                .AsNoTracking()
-                .ToList();
+            var newProduct = _dbContext.Products.Add(product);
+            await _dbContext.SaveChangesAsync();
+            return newProduct;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _dbContext.Products.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<Product> GetByIdAsync(int id)
+        {
+            return await _dbContext.Products.FirstOrDefaultAsync(_ => _.Id == id);
+        }
+
+        public async Task<Product> UpdateAsync(int id, Product product)
+        {
+            var productFromDatabase = await _dbContext.Products.FirstOrDefaultAsync(_ => _.Id == id);
+            productFromDatabase.Name = product.Name;
+            await _dbContext.SaveChangesAsync();
+            return product;
         }
     }
 }

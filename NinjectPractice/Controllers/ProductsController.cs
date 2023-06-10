@@ -1,10 +1,12 @@
 ﻿using NinjectPractice.Models;
 using NinjectPractice.Repositories;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace NinjectPractice.Controllers
 {
+    [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
         private readonly IProductsRepository _productsRepository;
@@ -13,13 +15,35 @@ namespace NinjectPractice.Controllers
             _productsRepository = productsRepository;
         }
 
-        // GET: Products
-
+        [Route("")]
         [HttpGet]
-        public IEnumerable<Product> GetAll()
+        public async Task<IEnumerable<Product>> GetAll()
         {
-            var products = _productsRepository.GetAll();
-            return products;
+            return await _productsRepository.GetAllAsync();
+        }
+
+        [Route("{id:int}")]
+        [HttpGet]
+        public async Task<Product> GetById(int id)
+        {
+            return await _productsRepository.GetByIdAsync(id);
+        }
+
+        [Route("")]
+        [HttpPost]
+        public async Task<Product> Create([FromBody] Product product)
+        {
+            return await _productsRepository.CreateAsync(product);
+        }
+
+        [Route("{id:int}")]
+        [HttpPut]
+        public async Task<Product> Update(
+            [FromUri] int id, 
+            [FromBody] Product product
+            )
+        {
+            return await _productsRepository.UpdateAsync(id, product);
         }
     }
 }
