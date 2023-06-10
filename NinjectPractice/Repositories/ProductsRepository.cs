@@ -1,4 +1,5 @@
-﻿using NinjectPractice.Models;
+﻿using NinjectPractice.Exceptions;
+using NinjectPractice.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
@@ -32,10 +33,14 @@ namespace NinjectPractice.Repositories
 
         public async Task<Product> UpdateAsync(int id, Product product)
         {
-            var productFromDatabase = await _dbContext.Products.FirstOrDefaultAsync(_ => _.Id == id);
+            var productFromDatabase = await _dbContext
+                .Products
+                .FirstOrDefaultAsync(_ => _.Id == id)
+                ?? throw new ElementNotFound($"{nameof(Product)} with id = {id} not found.");
+
             productFromDatabase.Name = product.Name;
             await _dbContext.SaveChangesAsync();
-            return product;
+            return productFromDatabase;
         }
     }
 }
