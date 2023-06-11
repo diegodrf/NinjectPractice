@@ -34,6 +34,7 @@ namespace NinjectPractice.Repositories
             return await _memoryCache.GetOrCreateAsync(key, async options =>
             {
                 options.AbsoluteExpirationRelativeToNow = TIME_TO_EXPIRE_CACHE;
+                options.SetPriority(CacheItemPriority.Low);
                 return await _productsRepository.GetAllAsync();
             });
         }
