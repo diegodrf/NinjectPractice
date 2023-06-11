@@ -11,10 +11,15 @@ namespace NinjectPractice.App_Start.DI
     {
         public override void Load()
         {
+            Bind<IOptions<MemoryCacheOptions>>()
+                .To<MemoryCacheOptions>()
+                .InSingletonScope()
+                .WithConstructorArgument("CompactionPercentage", .25)
+                .WithConstructorArgument("SizeLimit",1024);
+
             Bind<IMemoryCache>()
                 .To<MemoryCache>()
-                .InSingletonScope()
-                .WithConstructorArgument<IOptions<MemoryCacheOptions>>(new MemoryCacheOptions());
+                .InSingletonScope();
 
             Bind<ProductsRepository>()
                 .ToSelf()
@@ -23,8 +28,7 @@ namespace NinjectPractice.App_Start.DI
             Bind<IProductsRepository>()
                 .To<ProductsRepositoryCached>()
                 .InRequestScope()
-                .WithConstructorArgument<IProductsRepository>(Kernel.Get<ProductsRepository>())
-                .WithConstructorArgument<IMemoryCache>(Kernel.Get<IMemoryCache>());
+                .WithConstructorArgument<IProductsRepository>(Kernel.Get<ProductsRepository>());
         }
     }
 }
