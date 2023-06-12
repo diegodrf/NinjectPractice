@@ -4,6 +4,7 @@ using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Common;
 using NinjectPractice.Repositories;
+using NinjectPractice.Services;
 
 namespace NinjectPractice.App_Start.DI
 {
@@ -15,7 +16,7 @@ namespace NinjectPractice.App_Start.DI
                 .To<MemoryCacheOptions>()
                 .InSingletonScope()
                 .WithConstructorArgument("CompactionPercentage", .25)
-                .WithConstructorArgument("SizeLimit",1024);
+                .WithConstructorArgument("SizeLimit", 1024);
 
             Bind<IMemoryCache>()
                 .To<MemoryCache>()
@@ -29,6 +30,10 @@ namespace NinjectPractice.App_Start.DI
                 .To<ProductsRepositoryCached>()
                 .InRequestScope()
                 .WithConstructorArgument<IProductsRepository>(Kernel.Get<ProductsRepository>());
+
+            Bind<IJsonPlaceholderService>()
+                .To<JsonPlaceholderService>()
+                .InRequestScope();
         }
     }
 }
