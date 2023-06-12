@@ -16,10 +16,21 @@ namespace NinjectPractice.App_Start.DI
             Bind<AppDbContext>()
                .ToMethod(context =>
                {
+                   LoadCurrentPathToConnectionString();
                    var dbContextName = "ProductsDbContext";
                    return new AppDbContext(dbContextName);
                })
                .InRequestScope();
+        }
+
+        /// <summary>
+        /// Method to change the placeholder |DataDirectory| 
+        /// in ConnectionString Web.config to runtime current path.
+        /// </summary>
+        private void LoadCurrentPathToConnectionString()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            AppDomain.CurrentDomain.SetData("DataDirectory", path);
         }
     }
 }
