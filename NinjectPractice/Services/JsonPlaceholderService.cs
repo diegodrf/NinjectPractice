@@ -19,7 +19,6 @@ namespace NinjectPractice.Services
         {
             var response = await _httpClient.GetAsync("posts");
             response.EnsureSuccessStatusCode();
-            var p = await response.Content.ReadAsStringAsync();
             var content = await response.Content.ReadAsStreamAsync();
             var posts = await JsonSerializer.DeserializeAsync<IEnumerable<Post>>(content);
             return posts;
@@ -29,6 +28,7 @@ namespace NinjectPractice.Services
         public async Task<Post> GetPostById(int id)
         {
             var response = await _httpClient.GetAsync($"posts/{id}");
+            response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStreamAsync();
             var posts = await JsonSerializer.DeserializeAsync<Post>(content);
             return posts;
