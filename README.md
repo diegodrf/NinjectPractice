@@ -1,13 +1,5 @@
 ## A simple project to practice the use of Ninject to implements IoC
 
-#### Attention
-- If you need to run this project, pay attention to `NinjectPractice/Web.config` file. The path for datasource is hardcoded.
-```xml
-<connectionStrings>
-    <add name="ProductsDbContext" connectionString="Data Source=C:\Users\diego\source\repos\NinjectPractice\NinjectPractice\ProductsDbContext.db;Version=3" providerName="System.Data.SQLite" />
-  </connectionStrings>
-```
-
 ### How to implement Ninject
 - Install packages
     - `Ninject.Web.WebApi`
@@ -20,7 +12,7 @@ private static void RegisterServices(IKernel kernel) {
 ```
 
 ### If you need more organization
-- Create a class that hinherit from abstract class `NinjectModule` and implements the method `Load()`
+- Create a class that inherit from abstract class `NinjectModule` and implements the method `Load()`
 - Put your DI into `Load()` method. *Note that it uses the property `Bind` directly without the prefix `kernel`*
 ```csharp
 using Ninject.Modules;
@@ -38,7 +30,7 @@ namespace NinjectPractice.App_Start.DI
     }
 }
 ```
-- Instantiate your class into `StandardKernel` instatiation in `NinjectWebCommon.cs`.
+- Instantiate your class into `StandardKernel` instantiation in `NinjectWebCommon.cs`.
 ```csharp
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectPractice.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(NinjectPractice.App_Start.NinjectWebCommon), "Stop")]
