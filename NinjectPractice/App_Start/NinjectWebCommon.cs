@@ -41,7 +41,8 @@ namespace NinjectPractice.App_Start
         {
             var kernel = new StandardKernel(
                 new DbContextModule(),
-                new RepositoriesModule()
+                new RepositoriesModule(),
+                new HttpClientModule()
                 );
             try
             {
