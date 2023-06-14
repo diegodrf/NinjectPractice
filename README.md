@@ -1,5 +1,7 @@
 ## A simple project to practice the use of Ninject to implements IoC
 
+`.Net Framework 4.7.2`
+
 ### How to implement Ninject
 - Install packages
     - `Ninject.Web.WebApi`
